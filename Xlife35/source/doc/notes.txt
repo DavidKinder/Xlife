@@ -1,0 +1,80 @@
+The following diffs do four things:
+
+	1. Implement a more intelligent 'S' command. This now behaves like
+	   lifeconv; it emits P or R format, whichever is smaller.
+
+	2. Changes default saves to be relative to your current directory
+	   rather than your home.
+
+	3. Fixes the bug in argument-handling that was preventing the last
+	   command-line option from ever being seen.
+
+	4. Nukes lifeutil.c, replacing it with two modules cell.c and
+	   cellbox.c which divide its functions into cellbox-level and
+	   cell-internals level.
+
+The last one deserves more explanation. The motive was to isolate the cell
+internals stuff as strictly as possible (another step towards simulating
+automata with > 2 states).
+
+So cellbox.c now contains all the code that knows about the cellbox hash list.
+It knows nothing about the live[12] and olive[12] fields that actually store
+state, accessing these through getcell() and setcell() functions. Getcell() and
+setcell() are implemented in cell.c, along with displaybox() and another new
+function called forget() that throws away the olive[12] state.
+
+Note that this change does *not* add function call overhead into any critical
+loops -- generate() is untouched, and displaybox() still does its own access
+not going through getcell(). Saves *do* go through getcell(); the fractional
+slowdown is swamped by the disk I/O time.
+
+Knowledge of the cell state fields is now limited to generate(), [gs]etcell(),
+and displaybox().
+
+I'd like to take it out of displaybox(). I want to recode displaybox() as a
+double for-loop using the getcell() code (inlined for performance). This would
+make generalization to an n-state display fast and easy.
+
+I *think* the minor performance hit due to loop overhead would be swamped
+by the variation in X server display performance. But I'm not sure of this; so
+before I make the change I'd like one of you performance-fanatic types to
+pass on the matter.
+
+Next, I'd like us to make the state fields in the cellbox structure a struct
+in themselves, so the cell.c functions could completely lose their present
+knowledge of the rest of the cellbox internals.
+
+Specifically, I suggest that the cellbox struct should be replaced by
+two new declarations as follows:
+
+typedef struct
+{
+    unsigned long x,y,dead;
+    struct box *up, *dn, *lf, *rt, *fore, *next,*hfore,*hnext;
+    cellbox cells;
+}
+tile;
+
+typedef struct
+{
+    unsigned long live1,live2,olive1,olive2;
+    unsigned long on[8];
+}
+cellbox;
+
+All the (cellbox *) args in cellbox.c would become (tile *) arguments; those
+in cell.c would remain (cellbox *) args, but calls to the cell functions
+would take the addresses of `cells' fields in tiles.
+
+I'm discussing this before doing it because field references in generate()
+would have to change, and I don't want to muck with that code without getting
+a consensus first.
+
+Performance impact should be zero (there'd be no more work going on, just
+different offset computations at compile time).
+
+OK, you say, then why bother? Basically so I can define alternate cell.c and
+generate() functions that are tuned for 8 and 16-state automata without having
+to disturb the code that only needs to know about tiles (i.e. all of what is
+now cellbox.c).
+

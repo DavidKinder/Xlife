@@ -1,0 +1,40 @@
+Changes from v 1.0 to 1.6
+
+	* accepts -geometry and -bw
+	* more save file formats. see lifeconv.c and 
+		xlife.6 for the details.
+	* cursor relative loading
+	* cursor relative zoom/unzoom
+	* arrow keys work, along with a help key if you have one
+	* if for malevolent reasons your keypad is not returning numbers,
+		you can now use it for movement and centering of the image.
+		The Sun type-4 keyboard is such a beast.
+	* diagonal movement via 1357
+	* with scale > 3, cells are drawn with a black border
+
+	* FASTER! (at the expense of memory)
+
+Changes to 2.0
+
+	* testing, tweaking of 1.6 and realizing things had changed 
+		enough to warrant a version bump.
+	* more patterns
+
+Changes to 3.0
+
+	* new file format
+
+	* improved user interface
+
+	* read doc/pattern_editting for explanation of the new features
+
+Changes to 3.5
+
+	* improved user interface
+	
+	* box a region and manipulate inside
+
+	* subpixel resolution upto boxsize per pixel
+
+			jon (jb7m+@andrew.cmu.edu)
+			dan (dl2n+@andrew.cmu.edu)

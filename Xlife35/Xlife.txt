@@ -1,0 +1,431 @@
+Xlife(6)							     Xlife(6)
+
+
+
+NAME
+       Xlife - Conway's Game of Life for X, version 3.5
+
+SYNOPSIS
+       xlife [-display disp] [-geometry geom] [-bw width] [-dir ldir] [-?]
+	     [initial pattern file]"
+
+INTRODUCTION
+       Game of Life is a cellular automaton on an infinite quadratic lattice.
+       Each lattice cell is either on or off. The state of each cell is	com-
+       puted  each  generation	new and is determinated by it's old state and
+       the sum of the the surrounding 8 nearest neighbours cells  (on  counts
+       as 1 , off as 0). All these changes are simultaneously!
+       Therefore a given initial pattern develops according to the rules over
+       the generations and produces various configurations.  The game of life
+       rules  let  a  cell in the next generation only on/alive if it is sur-
+       rounded by either 2 or 3 on cells, the survive condition,  or  an  off
+       cell flips into the on/live state in the next generation if it is sur-
+       rounded by exactly 3 on/living cells, the  borne	condition.  Else  it
+       dies or stays death/off.
+       These  special  game of life rules was invented 1970 by the mathemati-
+       cian J. H. Conway to garantie that the cellulare automaton is  on  the
+       boundary	between  unbounded  growth  and  decay into dullness. It was
+       prooven that it's chaotic behaviour is unpredictable and it  could  be
+       used  to	build an universal turing-machine. One of the important open
+       problems is whether a sufficient large random populated universe	will
+       develop selforganization structures.
+
+
+DESCRIPTION
+       Xlife brings up a single window in which the user may explore the game
+       of life.
+       It's universe is effectivly unbounded (4.2 billion on a side).
+       The algorithim uses hashed 8x8 boxes of cells, and computes  the	next
+       generation by using lookup tables for added speed.
+       The  user  can  control	xlife interactivly by various key/bottom com-
+       mands.  But xlife doesn't read any Xresources to set geometry,  fonts,
+       etc. .
+
+       There are three subwindows: The large lifeuniverse window, a long nar-
+       row input window at the bottom and a small coordinate  window  at  the
+       lower  right corner.  The life window typicaly shows you a part of the
+       lifeuniverse displaying each living cell as a quadrat of n*n pixels. n
+       is a power of 2 in the range of 1/8 upto 128. This subwindow will also
+       be used to show a quick command reference menu with ? or	other	multi
+       line  output of the commands !, V and F. The input subwindow serves as
+       a control window for the different commands and the coordinate  window
+       shows  you  the	current	position  of the mouse cursor and the actual
+       scaling factor.
+
+
+
+OPTIONS
+       By default xlife will open the display according to your DISPLAY envi-
+       ronment variable unless you specify the -display option.
+
+       Also  by	default  xlife	will  run  in a window taking up your entire
+       screen.	The -geometry option sets the xlife window size and  position
+       as per usual for X applications.
+       If possible, you should tell your window manager to create xlife with-
+       out a title bar; otherwise you will have to use -geometry to  set  the
+       window's	vertical size enough smaller than the default that the title
+       bar doesn't crowd the bottom of the window off the screen.
+
+       The -bw option allows you to pass xlife the width of the borders	cre-
+       ated  by your window manager, for use in the internal window size cal-
+       culation.
+
+       With the -dir option you can set a default directory for the l  and  F
+       command.
+
+       The -? option prints only a usage message.
+
+
+COMMANDS
+       n		   Set	the maximal number of generations to perform.
+
+       t		   Set the recognition of  periodicity	in  the	cell
+			   counts.
+
+       @		   Run a benchmark for a fixed number of generations.
+
+       $		   Toggle showing of changing cell counts.
+
+       %		   Place random cells on the area of the universe  on
+			   the screen.
+
+       ^		   Set seed value for randomgenerator.
+
+       L		   Toggle showing of grid. If the cells are less than
+			   2 pixels, the grid is not shown.
+
+       ~		   Toggle the representation  of  the  Life  universe
+			   cyclic  between  three  modes.  The	standard mode
+			   which shows all alive cells, the mode  which	dis-
+			   plays  only the changing cells and the third which
+			   shows all alive and all sometimes died cells.
+
+       !		   Execute a shell command which needs no input.
+
+       F		   List certain filenames with suffix .life.
+
+       ( ) { }		Set a marker at current mouse position.
+
+       < > [ ]		Jump to marker, such that  marker  is  at  current
+			   mouse position.
+
+       J		   Jump to (x,y) location, such that this is the cur-
+			   rent mouse position.
+
+       a		   Display the xmin/xmax and ymin/ymax values of  the
+			   alive cells.
+
+       r RET		Redraw the screen.
+
+       b		   Box	a  region and define this as the scratch pat-
+			   tern.
+
+       d		   Box a region and delete all alive cells inside.
+
+       B		   Copy the scratch pattern at current mouse postion.
+
+       M		   Box	a  region, define this as the scratch pattern
+			   and change with it into Load Mode where it is con-
+			   sidered tentative.
+
+       *		   Box a region and place random cells inside.
+
+       u		   Undo	manipulations	of  tentative pattern but not
+			   the load.
+
+       ESC		 Abort selection of bounding box.
+
+       0		   Center the universe on the screen (based on median
+			   position of the boxes).
+
+       8		   Move your view of the universe up.
+
+       2		   Move your view of the universe down.
+
+       6		   Move your view of the universe right.
+
+       4		   Move your view of the universe left.
+
+       5		   Center  the universe on the screen (based on aver-
+			   age position of the boxes).
+
+       .		   Center the universe view on the cursor (also	But-
+			   ton 2 in normal mode).
+
+       = +		 Zoom	the  view in, magnifying the area around the
+			   mouse cursor.
+
+       -		   Zoom the view out.
+
+       g		   Toggle running the game.
+
+       o TAB		Step forward one generation. The use of  TAB	does
+			   not refresh the screen.
+
+       i		   Select the imageformat for saving patterns.
+
+       S		   Save	the  universe	to  a  file  adding extension
+			   .life.
+
+       l		   Load (actually add to) the universe	from  a	file
+			   with	extention .life.  This lets you overlay mul-
+			   tiple saved states to make  for  some  interesting
+			   effects.   Loaded  pattern is initially considered
+			   tentative, and may be manipulated in various	ways
+			   before  incorporating it into main pattern.	Clear
+			   the universe if you want to	start  from  scratch.
+			   Load	assumes   pattern   is  in  last  directory
+			   accessed.
+
+       h		   (Hide) stop displaying after each generation, does
+			   not iconify.
+
+       c		   Toggle showing of cell counts
+
+       ? Help		Help for this program.
+
+       R		   Change  the	rules  in  "stays alive on"/"born on"
+			   format. The standard rules are  23/3	(survive  on
+			   two	or  three neighbors, birth on three neighbors
+			   for an empty cell).
+
+       N		   Change the file's internal name.
+
+       A		   Add comments.
+
+       V		   View comments.
+
+       C		   Clear the universe.
+
+       Q		   Quit
+
+       f		   Run at a fast speed (no delay)
+
+       m		   Run at a medium speed (1/10 sec delay per  genera-
+			   tion).
+
+       s		   Run	at  a  slow  speed (1/2 sec delay per genera-
+			   tion).
+
+       p		   Toggle running display of mouse  position.	Posi-
+			   tion	is  only for reference during a session, and
+			   does not effect coordinates of saved points.	The
+			   scaling  factor  is	also  shown  behind the (x,y)
+			   position.
+
+       O		   Set current mouse position to  be  the  origin  of
+			   displayed coordinates.
+
+       G		   Generate  tentative loaded pattern for one or more
+			   steps.
+
+       U		   Undo load of tentative pattern.
+
+       I		   Force tentative pattern to  be  incorporated	into
+			   main pattern (automatic with g, h, o, l and W com-
+			   mands).
+
+       W		   Write (and flush from  memory)  script  of  loaded
+			   patterns  into  a file with .life extension.	When
+			   loaded,  this  script  corresponds  the   earliest
+			   ancestor  of	current  pattern  that can be recon-
+			   structed from loaded patterns (does	not  included
+			   changes  made with mouse).  Origin of written pat-
+			   tern is mouse position when W is typed.
+
+       D		   Discard current load script, including any  tenta-
+			   tive	pattern,  but	leave cell population intact.
+			   (Helpful for using an old pattern as a template to
+			   construct a load script).
+
+
+BUTTON BINDINGS IN NORMAL MODE
+       1		   Activate a cell at the cursor.
+
+       2		   Center the universe view on the cursor.
+
+       3		   Delete a cell at the cursor.
+
+
+BUTTON BINDINGS WITH TENTATIVE PATTERN LOADED
+       1		   Move pattern to current position.
+
+       2		   Flip pattern about its x-axis.
+
+       3		   Rotate pattern clockwise about its origin.
+
+
+LOAD FILE FORMAT
+       A .life image file is an ordinary text file consisting of lines termi-
+       nated by the newline character. It is interpreted as one or more image
+       sections	separated by section lines beginning with #. Lines led by ##
+       are considered comments and ignored.
+
+       Each image section is interpreted according to the format letter	fol-
+       lowing its section line #. The format letters are:
+
+       A -- Absolute.
+       Each  following	nonsection-line	is  interpreted as an absolute (x,y)
+       coordinate pair.
+
+       R [xoff[yoff]] -- Relative with an optional offset coordinate pair.
+       Each following nonsection-line is interpreted as	a  (x,y)  coordinate
+       pair  relative  to  the	current mouse position.	These relative image
+       sections are normally drawn with 0,0 on	the  current  mouse  position
+       (coordinates may be negative). This may be changed by including a pair
+       of whitespace-separated integers after the format character.  If	this
+       is  done,  these will be interpreted as a pair of x and y offsets, and
+       the image section will be drawn with its upper left  corner  displaced
+       from  the  cursor position by those offsets. This facility can be used
+       to write image files that will load patterns centered on the cursor.
+
+
+       D -- Relative to the previous coordinate pair.
+       Each following nonsection-line is interpreted as	a  (x,y)  coordinate
+       pair  relative  to the previous one. The first is relative to the cur-
+       rent mouse postion.
+
+       P [xoff[yoff]] -- Picture with an optional offset coordinate pair.
+       Each nonsection-line in the section is interpreted as a scan line of a
+       relative image.	Each * character turns the corresponding cell on. All
+       other characters leave the corresponding cell off.
+
+       M [x = xdiam y = ydiam [rule =  digitstring/digitstring]]  --  Picture
+       with an optional diameter pair and a rule declaration.
+       If  the diameter is present it should indicate the size of the picture
+       bounding box.  Each nonsection-line in the section is interpreted as a
+       scan  line  of  a relative image which is run-length-encoded. Only the
+       characters o, b, $, ! and the digits 0 until 9  should  appear  except
+       whitechars  which  are ignored.	A o character turns the corresponding
+       cell on and a b character turns the corresponding cell off. A $	char-
+       acter  skips to the begin of the next image cell line which is aligned
+       just as the first image cell line that starts as the  mouse  position.
+       The  ! terminates all these data. Each of the three characters ob$ can
+       be led ahead by a positive integer, not staring with a 0,  which	then
+       is  interpretated  as  the  repetation  of that character. Any illegal
+       character will be interpretated as ! and terminates the scan.
+
+       I patternname [xoff[yoff[rotate[flip[delay]]]]] -- Include pattern.
+       A #I line should have whitespace-separated fields after	the  #I	con-
+       sisting	of  a pattern name and five optional integer parameters. pat-
+       ternname takes one of the following three forms:
+       <file>	 --   include whole file <file> (like old format)
+       <file>:<name>  --   include pattern block <name> in <file>
+       :<name>	--   include pattern block <name> in current file
+       xoff and yoff are integers representing horizontal and  vertical	off-
+       set.
+       rotate is an integer that specifies the number of times the pattern is
+       rotated 90 degrees clockwise around the origin.	Any  value  (positive
+       or  negative)  is acceptable, as all are taken modulo 4 (true mod, not
+       "%").
+       flip is a multiplier (1 or -1) for the y coordinate that	specifies  a
+       flip  about  the	x-axis.   Other  integers  are accepted and silently
+       mapped to 1.
+       delay is an integer specifying the number of  generations  to  perform
+       before loading the pattern (negative values have same effect as 0).
+       The named pattern is loaded as if it had been included in the image at
+       this point with the given  transformation  applied.  The	offsets,  if
+       present,	displace  the load point of the pattern relative to the cur-
+       rent mouse position. The include facility  is  useful  for  assembling
+       `sampler'  collections of interesting patterns, as well as maintaining
+       structured representations of complex patterns.
+
+       B name and E -- Pattern blocks.
+       Patterns enclosed by #B name and #E lines are skipped when  loading  a
+       whole  file,  but  may be accessed by adding :<name> to the file name.
+       They are useful for bundling related  patterns  into  the  same	file.
+       Access  is  by sequentially skipping lines not in the block, so exces-
+       sive numbers of blocks in the same file may slow down the loading pro-
+       cess.  Pattern blocks may not be nested.
+
+       A  leading  image  section with no header line is treated as though it
+       had a #A header. Thus, version 1.00 image files will load properly.
+
+       N -- Name
+       This line contains the internal name of the pattern (which may  differ
+       from the name of the file).
+
+       O -- Owner
+       This line contains information on the person who wrote the file, it is
+       written in the form: id "name"@machine date, for example.
+
+       #O jb7m "Jon C. R. Bennett"@sushi.andrew.cmu.edu Fri Jan	12  18:25:54
+       1990
+
+       C -- Comment
+       Lines  beginning	with C are comments that the user may have automati-
+       caly writen to the save file, and which	may  be	viewed	via  V	from
+       within  Xlife.  When loading a new pattern file, the old comments will
+       be disgarded.
+
+       r survivedigits/borndigits -- Set new rules
+       This line defines a new set of rules. survivedigits and borndigits are
+       a  sublist  of digits out of the range 0 upto 8 counting the number of
+       neighbours when the central  cell  in  the  moore  neighbourhood	sur-
+       vives/is	borne	to  state  ON.	For example the default and classical
+       game_of_life rules are:
+       #r 23/3
+
+       More section formats may be added in the future.
+
+
+RESTRICTIONS
+       Old files in #P format may not have same y coordinate when read by the
+       new  release.  For best results, use "oldpconv name ..." on old files.
+
+
+DIAGNOSTICS
+       no display defined
+       Either the environment DISPLAY nor the option -display is set.
+
+       can't open display
+       The specified display doesn't exist or you have no permission to	open
+       it.
+
+       Can't open main window
+       The creation of the Xlife window failed.
+
+       Can't load font
+       There is no appropriate Xfont or the fontsearchpath is wrong.
+
+       structure allocation for windowName failed.
+
+       structure allocation for iconName failed.
+
+       create: malloc error:
+       Storage allocation failed when creating a new cellbox inside.
+
+
+FILES
+       /usr/lib/X11/xlife/patterns  -  default directory for lifepatterns
+	./.boxcontents	-  scratch file needed for boxcommands
+
+
+BUGS
+       When expose events occur and text is displayed in the life window, the
+       window will not be refreshed.
+
+
+AUTHORS
+       Algorithm, implementation and file format enhancements:
+	    Jon Bennett (jcrb@fore.com)
+
+       Original X code:
+	    Chuck Silvers (cs4n@andrew.cmu.edu)
+
+       Auto-sizing, X options and load format enhancements:
+	    Eric S. Raymond (eric@snark.uu.net)
+
+       Enhancements to #I format, box commands and user interface:
+	    Paul Callahan (callahan@cs.jhu.edu)
+
+       Improvements of the user interface and subpixelresolution:
+	    Achim Flammenkamp (achim@mathematik.uni-bielefeld.de)
+
+
+SEE ALSO
+       xtrek(6)
+
+
+
+X Version 11			Release 5			  Xlife(6)

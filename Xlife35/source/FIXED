@@ -1,0 +1,21 @@
+#I now looks in pattern directory if file is not found in working directory
+[this has been superceded--see ADDED]
+
+'o' now redisplays pattern after doing a generation
+
+(shift) doesn't cause last keystroke to come back.
+
+Cursor mask includes border around cursor (so it will show up on white 
+background).
+
+Resizing works.  Input and coordinate windows are given correct sizes.
+
+Non-keystroke events are handled during text input.
+
+Horizontal scroll point is computed from size of input window.
+
+#P now computes y coordinate of a line in a picture as position in file 
+*relative* to #P (used to be absolute line number).  
+MAY CAUSE INCOMPATIBILITY WITH PATTERNS CREATED UNDER AN EARLIER VERSION.
+
+Deletecell doesn't allocate new cellbox.  New routine looklink.

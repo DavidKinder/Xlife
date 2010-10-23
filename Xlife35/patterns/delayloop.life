@@ -1,0 +1,31 @@
+#I delayloop:rwhead 231 -82 0 1 50
+#I delayloop:reflectors 153 85 0 1 534
+#I delayloop:extensible 166 -1 0 1 0
+#I still:eater 142 -2 2 -1
+
+#B rwhead
+#I ssmgun -243 50 0 1 119
+#I ssmgun -107 58 0 1 379
+#I glidergun:p120 -390 2 2 1 0
+#I glidergun:p120 -259 5 2 1 0
+#I glidergun:p120 -14 54 2 1 122
+#E
+
+#B reflectors
+#I glidermirror 167 -8 3 1 0
+#I glidermirror 11 133 2 -1 0
+#I glidermirror -103 30 2 1 1
+#I glidermirror -209 125 2 -1 0
+#I glidermirror -315 4 1 1 2
+#E
+
+#B extensible
+#I :eatermaker -25 48 0 1 0
+#I ssmpufp20b 138 27 0 1 74
+#E
+
+#B eatermaker
+#I rakep120b 151 -113 0 1 3
+#I rakep120b 156 42 0 -1 0
+#I rakep120f 59 24 0 1 152
+#E

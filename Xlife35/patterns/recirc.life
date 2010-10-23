@@ -1,0 +1,8 @@
+#I :main
+
+#B main
+#I glidergun 0 186 0 1 0
+#I glidermirror 23 220 2 -1 22
+#I glidermirror 234 37 1 -1 17
+#I glidermirror 223 -2 0 -1 44
+#E

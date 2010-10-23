@@ -1,0 +1,178 @@
+Here are some excerpts from my latest letter to Bob Wainwright, including
+a description of block pusher 3, another example of glider self-repair,
+and some p3s:
+
+     Last month I spent quite a bit of time trying to build a smaller block
+pusher.  After building a smaller catcher as described in my 12/14/89
+letter, I went to work on the shotgun.  By adding 90 degree turns to
+reposition the glider sources, I was able to squeeze everything into a
+271x289 rectangle.  I ran "block pusher 2" for 10000 generations, during
+which the block moved 10 times.  That's enough to determine the min and max
+populations: 2389 and 2584.  But I was annoyed because it was still too big
+for my fast screen-oriented program.  So I decided to look for a smaller
+salvo which could push a block.  I started searching through the 2 glider +
+block collisions, hoping to find one which would move the block and send
+back a glider.  It seemed unlikely that the block would actually be pushed
+along the diagonal, but I figured that I could use one of the many 2 glider
++ block collisions which just move the block to put the block back on the
+right diagonal, a convenient distance downstream.  But after watching a few
+hundred collisions, I found something even better: one which produced a
+block 10 units downstream, sent back a glider, and produced some other junk
+(a traffic light and 2 blocks) upstream from the new block.  It seemed
+likely that I could find a way to add a third glider to suppress the junk.
+I didn't quite manage that, despite a fairly thorough search.  But I did
+find a way to add a glider so the junk was suppressed and a second return
+glider was produced.  Here's the salvo about to push a block; the reaction
+takes 135 generations:
+
+        .o.......,.........,.........
+        ..o......,.........,.........
+        ooo......,.........,.........
+        .........,.........,.........
+        .........,.........,.........
+        .........,.........,.........
+        .........,.........,.........     Figure 0
+        .........,.........,.........
+        .........,.........,......o.o
+        .........,.........,.......oo
+        .........,.........,.......o.
+        .........,.........,o........
+        .........,.........,.oo...oo.
+        .........,.........,oo....oo.
+
+     Because the 3 gliders's flightpaths are fairly far apart, I was able
+to build a shotgun without needing the G+LW -> G reaction.  Instead, I used
+a salvoing method which I'd thought of earlier but couldn't use for the 5
+glider salvo:
+
+          G1    G0
+            \  /
+             \/  E
+             /\ /
+            /  X
+            \   R                Figure 1
+             \ X    G3
+              X \  /
+             / \ \/
+            /   \/\
+          G2    /\ \
+                \ \ \
+                 \ \
+                  \
+
+Here G denotes a gun, E an eater, and R a rephaser.  The G0 and G1 streams
+cross without interacting, as do the G0 and G2 streams.  The G0 stream
+makes a 90 degree turn after crossing the G1 stream.  The G1 and G2 streams
+then meet at a rephaser, which pulls the G1 stream 6 units to the left,
+bringing it closer to the G0 stream than a 90 degree turn by itself can.
+This produces the two lead gliders of the salvo.  The third is added by a
+fourth gun whose output makes a 90 degree turn.
+
+     The wideness of the salvo (and its fixed geometry) made building a
+suppressor harder.  There's no way to destroy the salvo with just one
+perpendicular glider.  So I used two, one from the catcher and another
+which I call the assistant. The one from the catcher strikes the two lead
+gliders and creates a half honey farm.  The assistant destroys one beehive
+and the third salvo glider destroys the other.  But if the glider from the
+catcher is missing (as it will be when the catcher detects a return
+glider), then the assistant passes through the salvo without harming it and
+then gets eaten.  So I didn't need extra circuitry to delete the assistant
+when a return is detected.  Here's how the annihilation works; also shown
+is the eater which eats the assistant when the glider from the catcher is
+absent:
+
+        .........,.........,.........,....a.a
+        .........,.........,.........,....aa.
+        .........,.........,.........,.....a.
+        .........,.........,.........,.......
+        .o.......,.........,.........,.......
+        ..o......,.........,.........,.......
+        ooo......,.........,.........,.......
+        .........,.........,.........,.......
+        .........,.........,.........,.......
+        .........,.........,.........,.......
+        .........,.........,.........,.......    Figure 2
+        .........,.........,.........,.......
+        .........,.........,......o.o,.......
+        .........,.........,.......oo,.......
+        .........,.........,.......o.,.......
+        .........,.........,o........,.......
+        .........,.........,.oo......,.......
+        .........,.........,oo.......,.......
+        .........,.........,.........,.......
+        .........,.........,.........,.......
+        .........,.........,.........,.......
+        .........,.........,.ccc.....,.......
+        .........,.........,...c.....,.......
+        .........,..ee.....,..c......,.......
+        .........,...e.....,.........,.......
+        .........,eee......,.........,.......
+        .........,e........,.........,.......
+
+     Building a catcher was much harder, because of the extra return
+glider.  Instead of using vanish reactions to detect the return, I had to
+use ternaries.  (Not the usual ternaries, since the 2 return gliders are on
+slightly different flightpaths.)  Not surprisingly, such reactions turned
+out to be rare.  As a result, I wasn't able to use just queen bee shuttles
+for 90 degree turns to make the detectors cross the diagonal; I also had to
+use a pair of inverting 90 degree turns (p30 guns).  And there's another
+problem:  Each time the block gets pushed, the round trip time for the
+salvo and return increases by 80.  So there are 3 possible phases mod 120
+for the first return glider. (That's why the detectors have to cross the
+diagonal in 3 places.)  But the second return glider arrives about 80
+generations behind the first; it's almost in the same position and phase as
+the next return glider will be.  So the detector that's farthest downstream
+must be able to hit a first return glider in a certain place, but miss a
+second return glider in almost the same place.  And of course the detectors
+must not interfere with escaping salvos.  Getting the geometry right was a
+real pain!
+
+     Anyway, I finally got "block pusher 3" working.  The initial bounding
+box is only 168x194.  It runs in my screen-oriented program at 5.3 hertz
+for 4107 generations, pushing the block 4 times; on the 5th push it hits
+the edge. I also ran it in my Forth program (at 0.5 hertz) for 16852
+generations, during which the block moved 13 times.  The population
+fluctuates between 1185 and 1424.  That could presumably be smoothed out
+somewhat by pulling a couple of guns farther out to change their phases; 3
+of the 6 p120 guns are synchronized.  Also, I now know how to build a
+slightly smaller p120 gun, so the size could be decreased a bit.  (Maybe
+later.  And maybe someday I'll build a squirt gun based on this.)
+
+. . .
+
+The top glider in Figure 13 also repairs itself, changing 3/4'th of the
+forming honey farm into 2 boats.
+
+        ....o..
+        .....oo
+        ....oo.
+        .......
+        o.o....
+        .oo....
+        .o.....
+        .......
+        oo.....
+        oo.....
+
+       Figure 13
+
+     Here are a few results from my search program.  Figure 15 shows a
+smaller p3 with an active corner.  It fits in an 11x11 box; there are none
+in 10x11.  (I don't know about 10xN for N between 12 and 22.)  Figure 16 is
+a smaller version of Figure 1 of my 12/4/89 letter.  Figures 17 and 18 show
+p3 billiard tables which act like 2 and 4 overlapping copies of Figure 16
+and its kin.
+
+        ......o....
+        ......ooo..
+        oo..oo...o.    oo.oo....    ..oo.o..o    ...oo.o..
+        .o.o.o.oo..    o.oo...oo    .o.o.oooo    ...o.oo..
+        ....oo.o...    .....o..o    .o.o.....    oo.o.....
+        ..o.o..o...    .ooo.ooo.    oo.o.oo..    .o.o.oooo
+        ..o..ooo.oo    o........    o......o.    o.......o
+        oo.oo...o.o    oo..oo...    ..oo.o.o.    oooo.o.o.
+        ...o..o.o..    .....o...    ...o.oo..    .....o.oo
+        ..o.o...o..    ....o....    ...o.....    ..oo.o...
+        oo....oo...    ....oo...    ..oo.....    ..o.oo...
+
+         Figure 15     Figure 16    Figure 17    Figure 18

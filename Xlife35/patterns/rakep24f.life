@@ -1,0 +1,6 @@
+#C structured description of period 24 rake (forward gliders)
+
+#C pat        x  y  rot  flip  delay
+#C ---        -  -  ---  ----  -----
+#I rakep24b
+#I rakep24b   4 -20   0    -1     1

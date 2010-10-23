@@ -1,0 +1,40 @@
+#I FORMAT
+---------
+The #I command has the following format:
+
+#I <pattern> <x> <y> <rotate> <flip> <delay>
+
+Any prefix of fields that includes a pattern name is acceptable, with defaults
+taken to be backward compatible with old format.
+
+<pattern> is a pattern name (described below).
+<x> and <y> are integers representing horizontal and vertical offset.
+<rotate> is an integer that specifies the number of times the pattern is rotated
+         90 degrees clockwise around the origin.  Any value (positive or 
+         negative) is acceptable, as all are taken mod 4 (true mod, not "%").
+<flip> is a multiplier (1 or -1) for the y coordinate that specifies a flip 
+         about the x-axis.  Other integers are accepted and silently mapped 
+         to 1.
+<delay> is an integer specifying the number of generations to perform before 
+         loading the pattern (negative values have same effect as 0).
+
+Note that all of the transformations applied to an included pattern are taken 
+relative to the pattern that includes it.
+
+Pattern Names
+-------------
+A pattern name takes one of the following three forms:
+
+<file>         --   include whole file <file> (like old format)
+<file>:<name>  --   include pattern block <name> in <file> 
+:<name>        --   include pattern block <name> in current file 
+
+(Note that <file>: is not allowed.)
+
+Pattern Blocks
+--------------
+A pattern block is a pattern given in any acceptable format between a line
+containing "#B <name>" and another line containing "#E".  Pattern blocks
+are skipped when including a whole file.  
+
+(Note that pattern blocks *cannot* be nested.)

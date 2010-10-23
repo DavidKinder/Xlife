@@ -1,0 +1,252 @@
+Date: Wed, 22 Nov 89 03:38 EST
+From: Dean Hickerson <HUL@PSUVM.Bitnet>
+Subject: Description of block pusher
+To: rwg@YUKON.SCRC.SYMBOLICS.COM, dba@ANDREW.CMU.EDU, rcs@LA.TIS.COM,
+        acw@YUKON.SCRC.SYMBOLICS.COM
+
+Here's the promised description of block pusher.  It's fairly detailed and
+includes some things which you've all seen before; I put them in so I can
+send it to Wainwright, Trevorrow, and others who haven't been following
+our discussion.
+     
+     The block pusher consists of a stationary pattern made of guns,
+eaters, and glider streams, and a block some distance to the SE.  The
+pattern fires a group of 5 gliders at the block; when they hit, the block
+is moved farther SE and a glider is sent back NW.  When this glider reaches
+the stationary part, another glider group is sent toward the block.  Since
+the round trip time keeps increasing, points along the gliders's flight
+paths never become periodic.
+     
+     The collision which moves the block is shown below. The gliders are
+labelled A, B, C, D, and E.  Gliders A and B move the block 7 units west
+and 4 units south.  Gliders C and D turn it into a boat.  Glider E turns it
+back into a block, 5 units SE of its original position, and sends back a NW
+glider.  (I'd known the glider+boat -> block+glider reaction for several
+years.  I found the gliders+block -> boat reaction after just a few minutes
+of experimenting. Putting these together results in pushing the block, but
+also moves it off the diagonal.  I then tried hundreds of collisions
+between 2 gliders and a block until I found one which moved the block back
+to the correct diagonal; I was hoping for a combination which moved it
+15 or 23 units, but 5 was the best I found.  My search was by no means
+complete, so it's possible that there's a group of only 4 (or maybe even 3
+or 2) gliders which does the job.)
+     
+        e.e...............................
+        .ee...............................
+        .e................................
+        ..................................
+        ..................................
+        .....d............................
+        ......d...........................
+        ....ddd...........................
+        ..................................
+        ..................................
+        ..........c.......................
+        ...........c..........b...........
+        .........ccc...........b..........
+        .....................bbb..........
+        ..................................
+        ..................................
+        ..................................
+        ............................a.....
+        .............................a..oo
+        ...........................aaa..oo
+     
+     The stationary part of block pusher lies along a NW-SE diagonal, and
+consists of 3 pieces.  At the NW end is the shotgun, which produces a 5
+glider group every 120 generations.  Next there's the suppressor, which
+shoots gliders at the shotgun's output, destroying the groups. Finally,
+there's the catcher, which waits for a glider to come from the block and
+then deletes one of the suppressor's gliders, thereby allowing one glider
+group to escape toward the block.
+     
+     The shotgun builds the groups's gliders in the order A, E, D, C, B.
+Gliders A are produced by a p120 gun aimed SE. Gliders E are produced by a
+p120 gun aimed SW; they hit a queen bee shuttle which reflects them 90
+degrees to SE, as shown here:
+     
+        o.........
+        ooo.....o.
+        ...o...o..
+        ..oo...ooo
+        ..........
+        ......o...
+        ......o...
+        .....o....
+        ..........
+        ..........
+        ..oo...oo.
+        ..o.....o.
+        ..........
+        ...o...o..
+        ....ooo...
+        ..........
+        ..........
+        ..........
+        ..........
+        ..oo......
+        ...o......
+        ooo.......
+        o.........
+     
+Next, gliders D are produced by a LW spaceship gun aimed north and a glider
+gun aimed SW; they collide as shown here:
+     
+        .o....
+        .o.o..
+        .oo...
+        ......
+        ......
+        ooo...
+        o..o..
+        o.....
+        o.....
+        .o.o..
+     
+Gliders C and B are produced in the same way, except that for B the LW
+spaceship gun is aimed west and the glider gun is aimed NE.  Each LW
+spaceship gun is made from 2 glider guns whose gliders collide in the
+vicinity of a pentadecathlon.  (Thanks to Bill for providing both the 90
+degree turn and the LW synthesis.)
+     
+        ..............o.o...
+        ...............oo...
+        ...............o....
+        ....................
+        ....................
+        ....................
+        .................oo.
+        .................o.o
+        .o..oo....oo..o..o..
+        o...ooo..ooo...o....
+        .o..oo....oo..o.....
+     
+Altogether, the shotgun consists of 11 p120 glider guns, one shuttle, and 3
+PDs.
+     
+     The suppressor is essentially a p120 glider gun whose output
+annihilates the glider groups.  (Actually I used a p30 gun, 3/4th of whose
+gliders get deleted by a glider stream from the catcher.)  The annihilation
+is done like this:
+     
+        e.e...............................
+        .ee...............................
+        .e................................
+        ..................................
+        ..................................
+        .....d............................
+        ......d...........................
+        ....ddd...........................
+        ..................................
+        ..................................
+        ..........c.......................
+        ...........c..........b...........
+        .........ccc...........b..........
+        .....................bbb..........
+        ..................................
+        ..................................
+        ..................................
+        ............................a.....
+        .............................a....
+        ...........................aaa....
+        ..................................
+        ...............................o.o
+        ...............................oo.
+        ................................o.
+     
+Finding a way to delete a group with just one glider wasn't really
+necessary, but made the catcher's circuitry much simpler.  Fortunately, the
+gliders+block reaction shown earlier occurs in 3 stages, so there's some
+flexibility in the spacing of the glider group.  Hence there are more ways
+to crash a glider into a group than if its geometry were fixed, so the
+chance that one of them would cause annihilation was increased.  It only
+took a couple hours of experimenting to find the one shown above.
+     
+     The catcher's job is to detect a glider coming from the block.  There
+are two difficulties.  First, the phase of the return glider is only known
+mod 40: If the block is 5 units farther away, the round trip time is
+increased by 40. That's why I chose p120 logic; there are only 3
+possibilities for the return glider's phase.  Second, the return glider's
+flight path overlaps that of the glider groups, so whatever detects the
+glider must not interfere with the groups.  Fortunately, a NE glider can
+slip between gliders B and C.  (If this hadn't been possible, it would have
+been necessary to either use slower guns, thereby increasing the number of
+possible return glider phases, or to add circuitry to turn off the
+detectors when a glider group goes by.)  Here's a circuit diagram of the
+catcher:
+     
+  Shotgun                    Suppressor
+        \                    /
+         \                  /\
+          \             E  /  \
+           \             \/    \
+            \            /\     \
+             \       E  /  \     \
+              \       \/    \     \
+               \      /\     \     \
+                \    /  \     \     \
+                 \  /    \     \     \
+                  \/      \     \     \
+                   \      /\     \     \
+                    \    /  G5   /\     \
+                     \  /       /  G4   /\
+                      \/       /       /  G3
+                      /\      /       /
+                     /  \    /       /
+                   G2    \  /       /
+                          \/       /
+                          /\      /
+                         /  \    /
+                       G1    \  /
+                              \/
+                              /\
+                             /  \
+                           G0    .
+                                  .
+                                   .
+                                    \
+                                     \
+                                      Block
+     
+"G" is a gun, "E" is an eater.  Guns G0-G2 have period 120, while G3-G5 and
+the suppressor have period 30.  Wherever gliders meet, they both vanish.
+Normally, during a 120 generation cycle, one of the 4 gliders produced by
+G3 is deleted by one from G0; hence 3 of the 4 from the suppressor are
+deleted.  There's also one missing from each of G4 and G5, so the
+suppressor's remaining glider gets through to hit the shotgun's output.
+But when a glider comes from the block, one glider is deleted from either
+G0, G1, or G2, so an extra one escapes from either G3, G4, or G5, the usual
+escapee from the suppressor is deleted, and a glider group escapes.
+----------------------------------------------------------------------
+     It should be possible to modify this construction to give a pattern
+whose population grows like  C sqrt(t)  for some C:  Reposition G3 so its
+output hits the output of G0 in a ternary reaction, replace the suppressor
+by a p120 gun, and add two p120 guns and an eater as shown:
+     
+                            E  Suppressor
+                             \/
+                             /\    G7
+                            /  \     \
+                           .    \    /\
+                          .      \  /  \
+                         .        \/    \
+                                  /\     .
+                                 /  \     .
+                               G6   /\     .
+                                   /  G3
+                                  .
+                                 .
+                                .
+                               /
+                             G0
+     
+The G3 stream's data, after its collision with the G0 stream, will be
+0011/1111 in a 120 generation cycle; the first bits occur normally, the
+others when a return glider has deleted one from G0.  G6 produces 0100 and
+hits the stream from G3 in a vanish reaction, so it becomes 0100/0000.
+This then hits the output of G7 (0100) in a vanish reaction, so a glider
+escapes from G7 only if a return glider has deleted one from G0.
+Meanwhile, the G3 stream after its collision with the G6 stream is
+0011/1011; the first of these bits is used to release or delete the
+suppressor's output.  Eventually, the population will be dominated by the
+outputs from G7 and will grow like  C sqrt(t).

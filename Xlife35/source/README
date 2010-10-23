@@ -1,0 +1,104 @@
+Installation Notes
+
+As usual, do 'xmkmf' followed by 'make depend' to get your own Makefile.
+
+	You will probably want to modify the DIR define in defs.h to match
+where you will be installing the xlife pattern libraries. The value
+will be what xlife pops up as the default load path.
+
+	Past that, not much needs to be done. Just type 'make' and have fun
+at some of the more interesting patterns shipped along with the
+program
+
+	breeder : the full blown breeder pattern which constructs
+			an infinite number of glider guns as it
+			moves to the right in the universe. This
+			is *big*.
+
+	cmu : well, if you didn't know already, CMU's official logo
+		is a 14 degree square. Run this to see *why* it is.
+		Just kidding ... really >:-)
+
+       shuttletrail:  defines a period-20 rake flotilla that leaves a 
+                     trail of shuttles at 10 cell intervals.
+
+        ex: contains example patterns referred to in the file pattern_editting.
+
+	plus lots and lots of nifty patterns which have been snarfed
+	from all over the place. You should see somewhere in there
+	just about every interesting little creature you ever heard
+	of. If you come up with any more good patterns (hopefully smaller
+	than the breeder :-), please send them over to us!
+
+	If you feel up to it, the TODO file lists some things we would
+like to add into the game ... if you implement any of these, please send
+us the patches.
+
+	About file formats - lifeconv is a filter that will switch life 
+file formats for you. If you have the patterns from the initial 1.0
+release, you may want to run lifeconv on all of the patterns. It isn't
+really neccesary since the new loader assumes the old format if none is
+specified in the file (see the man page), but lifeconv will convert
+the image to the smallest representation, and will allow offset loading.
+
+"pattern_editting" is an overview and tutorial to help get started with the 
+extended editting and include features.
+
+	The old 2.0 program lifeconv has not been taught the new file 
+format. It will only work on images without the #I, #B, and #E constructs. 
+It is not guaranteed to leave patterns with those constructs intact but 
+since it is still somewhat useful at times, it has been left in the 
+distribution (won't be built by default, tho).	
+
+	The lifesrch program based on Dean Hickerson's description (included
+in the 2.0 releases of xlife) by David I. Bell has been included in 
+lifesearch/.
+
+
+			Jon (jcrb@cs.cmu.edu)
+			Dan (dl2n@andrew.cmu.edu)
+			Chuck (cs4n@andrew.cmu.edu)
+ 			Eric (eric@snark.uu.net)
+
+
+NEW PATTERNS (that we particularly remember) :
+
+osc_p? 	        -	oscillators of period 2,3,4,n
+centinial		-	*s*entinal (i kin spill weyl :-)
+longsnake		-	collapsing gliders
+gourmet			-	interesting new clock pattern
+randomgun		-	look carefully, then beat your head against
+					the wall to clear your brain.
+alu             -   even worse
+counter         -   my head hurts ...
+blockpusher*    -   push da weetle block down the screen ...
+slowship*       -   *large* spaceships
+
+hacksaw         -   runaway and catcher
+marquee         -   unbelievable -- life is based 10 !
+linepuf         -   such a dirty thing
+max             -   the record grower
+
+PATTERN ARCHIVING :
+
+If you discover new and interesting life patterns, let us know! Please
+send the xlife savefile to
+
+	jb7m+xlife@andrew.cmu.edu
+
+	or post into the newsgroup
+
+	comp.theory.cell-automata
+
+These will be incorporated into the xlife distribution. Periodically, we will
+also post the latest and greatest discoveries to comp.theory.cell-automata.
+
+Sucessfully installed on:
+   HP  735    running HP-UX 9.03  X11R6 & X11R5
+   DEC AXP    running OSF1 V2.0  X11R5
+   DEC MIPS   running Ultrix 4.4  X11R5
+   SGI Mips   running IRIX 5.2  X11R5
+   SGI Mips   running IRIX64 6.2  X11R6
+   IBM RS6000 running AIX 3.2  X11R5
+   SUN sparc  running SunOS 5.4  openwin(X11R5)
+                                                                 3. January 97

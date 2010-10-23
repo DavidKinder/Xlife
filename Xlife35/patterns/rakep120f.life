@@ -1,0 +1,6 @@
+#C period 120 rake (forward gliders) made by combining p20 and p24 rakes
+
+#I rakep20b
+#I rakep24b 6 25 0 1 10
+#I ss:m   -52 21 0 1  1
+#I ss:m   -70 -2 0 1  2

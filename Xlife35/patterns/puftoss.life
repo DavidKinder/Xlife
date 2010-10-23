@@ -1,0 +1,4 @@
+#C glider maker for long period rake construction
+#C eats a beehive and produces a glider 
+#I rakep24b    0   0  0 -1
+#I rakep24b    3 169  0  1 1

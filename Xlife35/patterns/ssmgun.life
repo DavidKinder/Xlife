@@ -1,0 +1,4 @@
+#I glidergun:p120 -9  78 0 1 0
+#I glidergun:p120 -63 8 2 1 3
+#I glidergun:p60 -100 80 0 1 3
+#I still:eater 3 0 0 1 0

@@ -1,0 +1,9 @@
+#C structured description of period 24 rake
+
+#C pat      x  y  rot  flip  delay
+#C ---      -  -  ---  ----  -----
+#I gen:24
+#I ss:s     2  1 
+#I ss:s     2  1   0    -1 
+#I ss:l   -12  6 
+#I ss:l   -12 -9   0     0     1

@@ -1,0 +1,20 @@
+#I :main
+
+#B main
+#I :gghalf -30 -15 0 1 0
+#I :gghalf -7 -17 2 -1 5
+#E
+
+#B gghalf
+#I still:block -6 -1 0 1 0
+#I shuttle:oscil 4 4 2 1 0
+#E
+
+#B p60
+#I :main 24 0 3 1 0
+#I :main 18 -3 3 -1 3
+#E
+
+#B p120
+#I :p60 -40 0 0 1 3
+#I :p60 40 3 2 -1 0

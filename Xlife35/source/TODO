@@ -1,0 +1,7 @@
+Read different file formats (bitmap....) as new #-section types
+
+lifeconv should really be made more 'useful' and convert from other formats
+(pbm, x bitmap, etc).
+
+Graphic implementation with grayscale or color to have nice subpixel
+representation for huge patterns.

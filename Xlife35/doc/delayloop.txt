@@ -1,0 +1,187 @@
+From: callahan@server.cs.jhu.edu
+Sender: callahan@server.cs.jhu.edu
+To: jb7m+@andrew.cmu.edu
+Subject: Xlife pattern
+
+Here is the whole text of the article I posted about my pattern.  The
+pattern itself is compressed and uuencoded (mainly to reduce the line 
+count rather than the space).  The format is the standard one (a list of cell
+coordinates).  My working version is more "structured."  That is, I made use of 
+the "#I" feature to include subpatterns in patterns.  I found this feature very
+helpful for the construction of complex patterns.  It made it possible for
+me to experiment with Life in a much more serious manner than I had been 
+able to previously.  In the course of this experimentation, I had a few 
+general observations about Xlife (version 2.0). 
+
+On the whole, I was pleased with Xlife (certainly with its speed), but with
+the exception of the "#I" feature, the user interface did not seem to be
+geared to careful Life tinkering (as opposed to just making a pattern and
+watching it go).  Since the displacement of a subpattern by even a single 
+unit can completely change the behavior of a pattern, there is a need for great
+precision in placement.  One thing that strikes me as easy to implement, but 
+which would be enormously useful, would be an option that gave running 
+coordinates of the cursor position (I have in mind something like the box you
+get when resizing windows in X).
+
+Allowing flips and rotations to be applied to included patterns would also
+be quite handy (I think something like this is on the "to do" list in the
+version I have).  Another thing that I would like to see is the addition of a 
+phase shift in included patterns, so that a glider gun (say) could be included 
+at a particular point in its 30 step period.  This is not as hard to implement
+as it sounds.  We could represent the phase shift by specifying that the 
+subpattern be read in after the whole pattern has been executed for some 
+specific number of steps.  This would require pre-sorting the sequence of
+patterns to be included (and a pre-traversal of the "include graph" for
+phase-shifted patterns that include phase-shifted subpatterns), so it is
+not the most trivial thing in the world.  However, I think the trouble would
+be well worth it.  I'm willing to implement it myself eventually if I can find 
+the time, but I thought I'd make the suggestion in case anyone else wants to.
+
+Anyway, those are my suggestions.  This seemed like an opportune time to 
+make them known.  Here is the article with the pattern you requested. 
+
+---------- 
+
+From: callahan@cs.jhu.edu (Paul Callahan)
+Newsgroups: comp.theory,comp.theory.cell-automata
+Subject: Extendable "delay loop" memory for universal machine in Life
+Message-ID: <callahan.664517398@newton.cs.jhu.edu>
+Date: 22 Jan 91 00:20:10 GMT
+Lines: 362
+
+I have not yet constructed an explicit universal machine in Life.  However,
+I have constructed a potentially infinite memory component that I believe
+will make it easier to do so.  Before explaining this pattern (included
+with the posting) I feel obligated to clear up some misleading statements
+I made in a previous posting.
+
+It has been a long time since I read _The Recursive Universe_ (Poundstone), 
+and at the time I was under the false impression that its proof of life 
+universality relied on the ability to construct boolean logic gates which 
+could then be layed out in arbitrarily large networks by a universal 
+constructor.  I seem to have neglected the very elegant proof of universality 
+(by Conway himself, and treated in detail in _The Recursive Universe_) that is 
+implied by the existence of sliding block memories.  
+
+These memories make it possible to store an arbitrarily large integer 
+accessible by the operations increment, decrement, and test for zero.  It 
+is well known that a machine with two such memories (called counters) is 
+universal (see, for example, Hopcroft and Ullman _Introduction to Automata 
+Theory, Languages, and Computation_), so a universal machine can be constructed
+with two sliding block memories and a sufficiently large finite control.
+(the input tape could be represented a sequence of gliders going by the
+control initially). 
+
+The primary difficulty with a 2-counter machine is that it does not preserve
+polynomial time complexity, so it still seems desirable to construct an
+unbounded tape-like memory.  After some experimentation, I constructed an
+extendable "delay loop" memory.  In such a memory, a character is written to
+a stream by the finite control and it arrives back after a number of steps.  The
+length of the delay determines the size of the memory.  It is not hard to
+see how we may (at a linear time cost) simulate left/right tape moves using 
+such a memory.  It is easy to construct large finite delay loops in Life, so 
+the primary question is how to construct a delay loop that can be lengthened 
+arbitrarily by the finite control.
+
+Before going into the construction, which is rather intricate, it is worthwhile
+to point out precisely what is being attempted.  We assume a finite control 
+that, at each step, can read an incoming character, write an outgoing character,
+and possibly send a signal to lengthen the delay loop.  The character written at
+time t is read back at time t+d, where d is a delay parameter that is 
+incremented each time a lengthen signal is output by the finite control.
+For the actual construction, we assume a two character alphabet.
+
+The method I used to implement the extendable delay loop in Life is a 
+pair of spaceship streams going in opposite directions, the forward stream
+produced by a stationery gun, and the backward stream produced by a forward-mov-
+ing rake flotilla.  In general, we would like these streams to pass without
+affecting each other.  However, at a certain distance from the stationery
+gun, the presence of spaceships in the forward stream causes holes to be left in
+the backward stream (thus forcing data to reverse direction and head back
+toward the finite control).  The distance to the point at which the streams 
+interact determines the length of the delay loop.
+
+A carefully positioned "eater" (see a standard Life reference) can be used to 
+create such an interaction point.  To allow the finite control to adjust the
+interaction point, we augment the rake flotilla to produce a sequence of 
+eaters in addition to backward moving spaceships.  The leftmost eater will now 
+define the length of the delay loop.  To increase the size of the loop, our 
+finite control need only send out a spaceship along a path parallel to the 
+forward data stream in order to annihilate the leftmost eater.  The distance
+to the most distant eater grows very rapidly, so the maximum length of the 
+delay loop is effectively unbounded.
+
+The following schematic will (hopefully) be easier to follow than the 
+Life pattern itself.  It is still rather involved.  Symbol names
+are explained below.  This construction is a simple recirculating loop in
+which characters read from the delay loop are written back to it as they
+become available.  It is possible to manually force a loop-lengthening signal
+within Xlife by erasing a glider, but the pattern is not set up to issue one 
+automatically. 
+
+                       /
+     gg1       gg2    /     gg3                                            
+        \         \  /        \
+         x1        x2          \                                             
+        / \         \           \                                               
+       |   \         \    se<----x3--<--------<-------------<---------\
+        \   sg1--->---\-->----->--\----->----->------X                 R
+         \             sg2--->-----\-->------>-------e0 e1 e2 e3 ... /
+          \                         \                   (ei)            
+           \                         | 
+            \           -           /                                        
+             \         / \         /                                         
+              \       /   \       /                                          
+               \     /     \     /                                           
+                \   /       \   /                                            
+                 \ /         \ /                                             
+                  -           -                       
+
+Components of Pattern
+---------------------
+sg1: Spaceship gun producing forward data stream.
+gg1: Glider gun to normally inhibit sg1.
+ei:  Eater sequence establishing collision points for collision that 
+     leaves hole in backward stream when pair of ships arrive in
+     forward stream.
+sg2: Spaceship gun producing spaceships to lengthen delay loop by 
+     destroying leftmost remaining eater in sequence ei.
+gg2: Glider gun that normally inhibits sg2.
+gg3: Glider gun to test backward data stream by attempting to shoot
+     gliders through a hypothetical hole in stream.
+R:   Rake flotilla, producing spaceships for backward data stream,
+     as well as eater sequence ei.
+se:  Eater positioned to destroy spaceships from backward data stream.
+
+(Note: Isolated - and | characters are shuttles placed to reflect
+glider stream).
+
+Collision Points
+----------------
+x1:  Incoming glider hits glider from gg1 and leaves block, also destroying
+     next glider from gg1.  (Thus, incoming glider produces pair of
+     spaceships, which will eventually result in another incoming glider).
+x2:  Properly positioned glider destroys glider from gg2, causing sg2
+     to produce a spaceship that lengthens loop by destroying leftmost
+     eater. (This collision must be simulated "by hand" in enclosed 
+     Xlife file by erasing a glider from gg2).
+x3:  Glider attempts to pass through hole in backward data stream.  Thus,
+     contents of backward data stream are converted to incoming gliders.
+X:   Two consecutive spaceships in forward stream interact with two spaceships
+     in backward stream at leftmost eater.  Spaceships are all destroyed, 
+     while eater remains unharmed for the next collision (a glider is sent
+     Northeast as a useless, but harmless side-effect).
+
+Finally, the rest of this posting will consist of the pattern itself,
+in Xlife format.  This pattern produces an initial "1" in the delay loop, formed
+by two consecutive spaceships in the forward data stream, and "0" for all other
+positions in the delay loop.  It is possible to insert more 1s manually by
+destroying *two* consecutive gliders from gg1.  It is important to destroy
+them in pairs in order for the eater-interaction to work properly.  It is
+possible to turn 1s into 0s manually by destroying *single* gliders travelling 
+along the reflector path at the bottom of the construction.  
+
+Explanatory note: A "1" has three primary representations in the course of the 
+delay loop: a pair of spaceships in the forward data stream, a gap of two 
+spaceships in the backward data stream, and a single glider in the reflector
+path.

@@ -1,0 +1,53 @@
+#B gun
+#I :gghalf -30 -15 0 1 0
+#I :gghalf -7 -17 2 -1 5
+#E
+
+#B mircollision
+#I :mirror 0 0 0 1 0
+#I :glider -10 5 2 1 2
+#E
+
+#B gghalf
+#I :block -6 -1 0 1 0
+#I :oscil 4 4 2 1 0
+#E
+
+#B block
+#P
+**
+**
+#E
+
+#B oscil
+#P
+..*...
+.*.*..
+*...**
+*...**
+*...**
+.*.*..
+..*...
+#E
+
+#B mirror
+#I :oscil -21 3 0 1 0
+#I :eater -13 13 0 -1 0
+#I :eater -30 13 2 1 0
+#E
+
+#B eater
+#P
+..**
+..*.
+*.*.
+**.. 
+#E
+
+#B glider
+#P 
+.**
+*.*
+..*
+#E
+

@@ -1,0 +1,14 @@
+
+This is a straight port of XLife to Microsoft Windows. No attempt has been made to modify
+the program to be more like a Windows application; the object of the exercise was to get
+XLife to compile under Windows without modifying the source code in any way. This has been
+achieved using a simple X11 emulation library (X11Lib) to implement enough of the X11
+standard (plus a few Unix functions) to get XLife to run.
+
+For those unfamiliar with Xlife, press 'l' to load a file (a good example is "breeder")
+then press 'g' to start generating. For a list of all commands, press '?'.
+
+David Kinder
+davidk.kinder@virgin.net
+http://www.davidkinder.co.uk/
+

@@ -1,0 +1,219 @@
+				LIFESRC
+
+
+The following is a short explanation on how to run the life search program.
+
+This program attempts to find life objects which are periodic, which are
+spaceships, or which are parents of an object.  You specify a region to
+search in, the number of generations of interest, and some initial cells.
+The program then searches for all objects which satisfy the conditions.
+The search applies transition and implication rules which restrict the number
+of possible objects considered to a small fraction of the total number.  This
+makes it practical to find these objects in a reasonable amount of time.
+(Reasonable ranges from a few minutes to many days, depending on the size
+of the search.)
+
+The algorithm used here is based on the one described by Dean Hickerson
+in his document that was included with the xlife program, and which is also
+included with this distribution.  Reading that document will explain how
+the search in this program works, except for minor changes.
+
+The program usually looks for an object which is periodic in the number of
+generations specified by the -g option.  For example, use -g3 to look for
+period 3 oscillators or spaceships.  The program is pretty fast for period 2,
+satisfactory for period 3, long for period 4, and very long for period 5.
+
+By default, the program only finds objects which have the full period specified
+by the -g option.  Objects having subperiods of the full period are skipped.
+For example, when using -g4, all stable objects or period 2 oscillators will
+not be found.  The -a command line option disables this skipping, thus finding
+all objects, even those with subperiods.  You probably want to use -a if you
+use any of the -tr, -tc, or -p options.
+
+The object is limited to the number of rows and columns specified by the -r
+and -c options.  Cells outside of this boundary are assumed OFF.  Thus if
+any generation of the object would expand out of the box, then the object
+will not be found.  The program finds things quicker for a smaller number of
+rows and columns.  Searching proceeds from left to right column by column,
+and within a column from middle to edge.  It is quicker to search when there
+are less rows than columns.
+
+The three command line options -r, -c, and -g are always required (unless
+you are continuing a search using -l or -ln).  If you do not specify these
+options, or give them illegal arguments, a brief message will be output and
+the program will exit.  All other options are truly optional.
+
+If you want to find a symmetric object, then use the -sr or -sc options.
+The -sr option enforces symmetry around the middle row if the number of rows
+is odd, or the middle two rows if the number of rows is even.  The -sc option
+does the same thing for columns.  You can specify both options to look for
+fourfold symmetry.  These options will speed up the search since fewer cells
+need examining, but of course will miss all unsymmetric objects.
+
+Another way to speed up the search is to use the -m option to limit the
+number of ON cells in generation 0.  This will of course miss any
+objects which have too many cells.
+
+By default, the program looks for purely periodic objects.  To find a
+spaceship, you must use the -tr or -tc options to specify a translation.
+This makes generation N-1 shift right or down by the specified number of
+cells in order to become generation 0.  Thus this finds spaceships which
+move leftwards or upwards.  Use -tc to translate columns (thus making
+horizontal ships), and -tr to translate rows (thus making vertical ships),
+or a combination (thus making diagonal spaceships).  The slowest ship for
+any period uses a translation of 1, as for example -tc1.  Remember that the
+fastest horizontal speed is C/2 and the fastest diagonal speed is C/4, so
+that for example, using -tc2 for a period 3 spaceship will find nothing.
+
+By default, the program looks for objects such that generation N-1 implies
+generation 0, so that periodic objects can be found.  The -p command line
+option disables this circular dependency, so that generation 0 has no past
+and generation N-1 has no future.  This enables you to search for the parents
+of any object you desire.  Commonly you specify -g2 with this option, to
+look only one generation back.  To look for parents of an object, you specify
+the cells of the object in generation N-1, and leave the earlier generations
+unknown.  The 'c' command is useful with this option to completely specify
+the last generation (see below).
+
+The search program is always in one of two modes.  It is either in command
+mode, or in search mode.  When first started, it is in command mode.
+Command mode is indicated by the presence of a "> " prompt.  When in
+command mode, you can enter commands to the program, one per line.
+To leave command mode and begin searching, you simply enter a blank line.
+You can get back to command mode again by generating the SIGINT signal.
+When this is done, the program will stop searching at a convenient place,
+display the lastest status of the search, and read commands again.  Do not
+forget to later type the blank line to continue searching again!
+
+When first started, you may wish to specify the state of some cells to
+guide the search.  You can specify that any cell in any generation should
+be either ON or OFF.  Cells that you do not specify remain unknown.  As an
+example, if you were looking for a period 3 oscillator, you might want to
+specify the middle cell as being ON in generation 0, and OFF in generation 1.
+This would force period 3 behavior.  Note that when you specify cells, the
+state specified is permanent.  The program will not reverse your settings,
+and therefore can not find any objects which do not match your settings.
+Also note that settings unfortunately cannot be corrected, so if you set
+the wrong cell by mistake, you must leave the program and start again.
+
+To specify a cell, you use the 's' command when in command mode.  This command
+takes 2 or 3 arguments.  The first two arguments are the row and column
+numbers of the cell to set.  The third number is either 1 for setting the
+cell ON, or 0 for setting the cell OFF.  If the third number is omitted,
+then ON is assumed.  The cell is always set in the current generation, which
+is the one last displayed.  If necessary, you use the 'n' or 'p' commands
+to change the current generation to the desired one before using the 's'
+command.  For example, if the currently displayed generation is generation 0,
+entering "s 5 6" would set the cell at row 5 column 6 of generation 0 to ON,
+whereas "s 2 7 0" would set the cell at row 2 column 7 to OFF.  As a shortcut,
+you can omit the 's' letter, so that the command "5 6" would set the cell at
+row 5 column 6 ON.  If you are using the -sr or -sc options for symmetry, you
+don't have to enter the symmetric cells since the program does that for you.
+
+You can use the -i or -ia options to input the initial settings for either
+generation 0 or the last generation instead of typing in their coordinates
+manually as above.  The setting is normally for generation 0, but if the
+-p option was also used, then the setting is for the last generation.  The
+specified file contains a picture of the cells, with 'O' or '*' indicating
+ON, '.' indicating OFF, and '?' indicating unknown.  If you use -i, then
+only the ON cells are set, making the OFF cells stay unknown.  If you use
+-ia, then both ON and OFF cells are set.  You can still specify additional
+cells after the ones in the file have been read.
+
+The 'c' command will set all the currently unknown cells in the current
+generation to the OFF state.  This is intended to be used when searching
+for parents of an object that you have entered, and you know exactly what
+the object in the last generation looks like.  This command requires
+confirmation before it is acted on.
+
+Just before entering command mode, or occasionally if automatic viewing is
+enabled, the program will display the current status of the search.
+Cells marked as 'O' are ON, cells marked as '.' are OFF, and cells marked
+as '?' are currently unknown.  The generation number and the number of ON
+cells are also given, along with some of the command line options that were
+used to start the program.
+
+If you don't like to keep hitting interrupt in order to see the progress of
+a search, you can tell the program to automatically display the object every
+so often.  This is done either with the -v command line option, or the 'v'
+command.  The numeric argument is how many thousand search iterations to
+perform between displays.  As an example, the command line option -v1
+displays about every 5 seconds for a 20MH 386.
+
+Normally if the prog finds something, it will display the object and wait for
+commands.  At this point you can write out the object if desired.  Typing 'N'
+will continue looking for further objects which work.  If you specified the
+-a command line option, then the 'N' command will be needed immediately
+after starting a search with no initial settings, since the state of all
+OFF cells obviously satisfies all conditions.
+
+However, if you specify the -o option on the command line, the program will
+NOT stop when it finds an object.  Instead, it will append the found object
+to the specified file name, and automatically keep looking for further
+objects which work.  The objects stored in the output file are separated
+with blank lines.  When no more objects have been found, the program will
+print a final status message and exit.
+
+The following is a summary of all the commands available.  The 's' command
+sets cells and has already been described above.  The 'n' command displays
+the next generation of the current object, and will wrap around from the last
+generation back to generation 0.  The 'p' command displays the previous
+generation, also wrapping around.  The 'w' command writes out a picture of
+the current generation out to the specified file.  The 'd' command dumps
+the state of the search out to the specified file (see below).  The 'N'
+command will continue searching for the next object after an object has
+been found.  The 'v' option specifies the frequency of automatic viewing.
+The 'c' command turns all unknown cells in the current generation OFF.
+Finally, the 'q' command quits the program (confirmation is required).
+
+Since it can take a very long time to find something (days or even weeks!),
+the current state of a search can be dumped to a file and read again later.
+You can explicitly dump the status to a file by using the 'd' command.
+After this has been done, you can use 'q' to quit the program.  Then later,
+you can use the -l command line option to continue searching.
+
+More useful and safer, however, is the autodump feature of the program.
+Using the -d command line option causes a dump status file to be automatically
+written after every so many search iterations.  Thus every so often the
+specified file will contain the latest status of the search.  Then if your
+machine crashes, you will not have lost days of work.  The -d option takes a
+numeric operand, which is how many thousand searches to perform between dumps.
+The option also takes a filename as an argument, and if it isn't given,
+defaults to "lifesrc.dmp".  As an example, the option "-d100 foo" results
+in automatically dumping status about every 10 minutes to the file "foo".
+
+To load the dumped state that has been saved to a file, use the -l or -ln
+command line options.  Since the status file contains all information about
+the search configuration, you do not need to specify the number of rows,
+columns, generations, translations, symmetries, or initial settings again.
+However, if you wish autodumps, an output file, or automatic viewing, then
+you have to specify those options again.
+
+After the state has been loaded, generation 0 is displayed and either the
+program enters command mode if -l was used, or else the search immediately
+continues where it left off if -ln was used.  The -ln option is provided so
+that continuing the search program within shell scripts is easy.
+
+There are two versions of the program, called lifesrc and lifesrcdumb.
+They perform the same functions, but the user interfaces are slightly
+different.  Lifesrc uses the curses display routines to display the
+objects prettily, whereas lifesrcdumb assumes nothing fancy and just
+prints objects simply.
+
+As you can see, finding something requires skill, luck, and patience.
+Since you are limiting the search by specifying a rectangle, symmetry,
+maximum cells, and initial cells, you probably have to keep varying
+these parameters in order to come across something.
+
+Example searches are the following:
+
+	lifesrc -r5 -c5 -g2 -a			stable and period 2 oscillators
+	lifesrc -r10 -c10 -g3 -sr -sc -v1	period 3 oscillator
+	lifesrc -r4 -c4 -g4 -tr1 -tc1		glider
+	lifesrc -r5 -c7 -g4 -tc2		usual small spaceship
+	lifesrc -r5 -c16 -g3 -tr1 -v1		period 3 spaceship
+	lifesrc -r5 -c5 -g2 -p -a		parents of glider (needs input)
+
+Enjoy searching!
+
+-dbell-

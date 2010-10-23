@@ -1,0 +1,10 @@
+#C thinner for long period rake construction
+#C eats beehives and produces one for every two eaten
+#I rakep24b    0   0  0 -1
+#I rakep24b   55  -1  0 -1 2
+#I rakep24b    8  42  0 -1 2
+#I rakep24b    4  212 0  1 1
+#I rakep24f -153  171 0  1 264
+#I ss:m     -404   78 0  1 3
+#I ss:m     -419  137 0  1 3
+#I ss:l     -430  134 0  1 3

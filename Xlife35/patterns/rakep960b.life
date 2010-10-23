@@ -1,0 +1,7 @@
+#C Starting with period 120 block layer, we thin 3 times and
+#C toss off gliders in the final stage to achieve a period 960 rake. 
+#I thinblocks 945 176 0 1 260
+#I pufthinner 799 42 0 1 0
+#I pufthinner 495 285 0 -1 0
+#I pufthinner 191 42 0 1 0
+#I puftoss 0 74 0 1 229

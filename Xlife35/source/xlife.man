@@ -1,0 +1,425 @@
+.\"this leads in a one line comment
+.TH Xlife 6 "Release 5" "X Version 11"
+.ad b
+.SH NAME
+Xlife - Conway's Game of Life for X, version 3.5
+.SH SYNOPSIS
+.BR xlife
+[\fB-display \fIdisp\fR] [\fB-geometry \fIgeom\fR] [\fB-bw \fIwidth\fR]
+[\fB-dir \fIldir\fR] [\fB-?\fR]
+.in +6
+[\fB\fIinitial \fIpattern \fIfile\fR]"
+.SH INTRODUCTION
+.I Game\ of\ Life
+is a cellular automaton on an infinite quadratic lattice. Each lattice cell is
+either on or off. The state of each cell is computed each generation new and
+is determinated by it's old state and the sum of the the surrounding 8 nearest
+neighbours cells (on counts as 1 , off as 0). All these changes are
+simultaneously!
+.br
+Therefore a given initial pattern develops according to
+the rules over the generations and produces various configurations.
+The \fIgame\ of\ life\fR rules let a cell in the next generation only on/alive if it
+is surrounded by either 2 or 3 on cells, the survive condition, or an off cell
+flips into the on/live state in the next generation if it is surrounded by
+exactly 3 on/living cells, the borne condition. Else it dies or stays death/off.
+.br
+These special \fIgame\ of\ life\fR rules was invented 1970 by the mathematician
+J.\ H.\ Conway to garantie that the cellulare automaton is on the boundary
+between unbounded growth and decay into dullness. It was prooven that it's
+chaotic behaviour is unpredictable and it could be used to build an universal
+turing-machine. One of the important open problems is whether a sufficient
+large random populated universe will develop selforganization structures.
+
+.SH DESCRIPTION
+.I Xlife
+brings up a single window in which the user may explore the
+.I game of life.
+.br
+It's universe is effectivly unbounded (4.2 billion on a side).
+.br
+The algorithim uses hashed 8x8 boxes of cells, and computes the next 
+generation by using lookup tables for added speed.
+.br
+The user can control \fBxlife\fR interactivly by various key/bottom commands.
+But \fBxlife\fR doesn't read any Xresources to set geometry, fonts, etc. .
+
+There are three subwindows: The large lifeuniverse window, a long narrow input
+window at the bottom and a small coordinate window at the lower right corner.
+The life window typicaly shows you a part of the lifeuniverse displaying each
+living cell as a quadrat of n*n pixels. n is a power of 2 in the range of 1/8
+upto 128. This subwindow will also be used to show a quick command reference
+menu with \fB?\fR or other multi line output of the commands \fB!\fR, \fBV\fR
+and \fBF\fR. The input subwindow serves as a control window for the different
+commands and the coordinate window shows you the current position of the mouse
+cursor and the actual scaling factor.
+
+
+.SH OPTIONS
+By default \fBxlife\fR will open the display according to your \fBDISPLAY\fR
+environment variable unless you specify the \fB-display\fR option.
+
+Also by default \fBxlife\fR will run in a window taking up your entire screen.
+The \fB-geometry\fR option sets the \fBxlife\fR window size and position as
+per usual for X applications.
+.br
+If possible, you should tell your window manager to create \fBxlife\fR without a
+title bar; otherwise you will have to use \fB-geometry\fR to set the window's
+vertical size enough smaller than the default that the title bar doesn't
+crowd the bottom of the window off the screen.
+
+The \fB-bw\fR option allows you to pass \fBxlife\fR the width of the borders
+created by your window manager, for use in the internal window size calculation.
+
+With the \fB-dir\fR option you can set a default directory for the \fBl\fR and
+\fBF\fR command.
+
+The \fB-?\fR option prints only a usage message.
+
+.SH COMMANDS
+.IP \fBn\fR 20
+Set the maximal number of generations to perform.
+.IP \fBt\fR 20
+Set the recognition of periodicity in the cell counts.
+.IP \fB@\fR 20
+Run a benchmark for a fixed number of generations.
+.IP \fB$\fR 20
+Toggle showing of changing cell counts.
+.IP \fB%\fR 20
+Place random cells on the area of the universe on the screen.
+.IP \fB^\fR 20
+Set seed value for randomgenerator.
+.IP \fBL\fR 20
+Toggle showing of grid. If the cells are less than 2 pixels,
+the grid is not shown.
+.IP \fB~\fR 20
+Toggle the representation of the Life universe cyclic between
+three modes. The standard mode which shows all alive cells,
+the mode which displays only the changing cells and the third
+which shows all alive and all sometimes died cells.
+.IP \fB!\fR 20
+Execute a shell command which needs no input.
+.IP \fBF\fR 20
+List certain filenames with suffix \fB.life\fR.
+.IP \fB(\ )\ {\ }\fR 20
+Set a marker at current mouse position.
+.IP \fB<\ >\ [\ ]\fR 20
+Jump to marker, such that marker is at current mouse position.
+.IP \fBJ\fR 20
+Jump to (x,y) location, such that this is the current mouse position.
+.IP \fBa\fR 20
+Display the xmin/xmax and ymin/ymax values of the alive cells.
+.IP \fBr\ RET\fR 20
+Redraw the screen.
+.IP \fBb\fR 20
+Box a region and define this as the scratch pattern.
+.IP \fBd\fR 20
+Box a region and delete all alive cells inside.
+.IP \fBB\fR 20
+Copy the scratch pattern at current mouse postion.
+.IP \fBM\fR 20
+Box a region, define this as the scratch pattern and
+change with it into Load Mode where it is considered tentative.
+.IP \fB*\fR 20
+Box a region and place random cells inside.
+.IP \fBu\fR 20
+Undo manipulations of tentative pattern but not the load.
+.IP \fBESC\fR 20
+Abort selection of bounding box.
+.IP \fB0\fR 20
+Center the universe on the screen (based on median position of the boxes).
+.IP \fB8\fR 20 
+Move your view of the universe up.
+.IP \fB2\fR 20 
+Move your view of the universe down.
+.IP \fB6\fR 20
+Move your view of the universe right.
+.IP \fB4\fR 20
+Move your view of the universe left.
+.IP \fB5\fR 20
+Center the universe on the screen (based on average position of the boxes).
+.IP \fB.\fR 20 
+Center the universe view on the cursor (also \fBButton\ 2\fR in normal mode).
+.IP \fB=\ +\fR 20
+Zoom the view in, magnifying the area around the mouse cursor.
+.IP \fB\-\fR 20
+Zoom the view out.
+.IP \fBg\fR 20
+Toggle running the game.
+.IP \fBo\ TAB\fR 20
+Step forward one generation. The use of \fBTAB\fR does not refresh the screen.
+.IP \fBi\fR 20
+Select the imageformat for saving patterns.
+.IP \fBS\fR 20
+Save the universe to a file adding extension \fB.life\fR.
+.IP \fBl\fR 20
+Load (actually add to) the universe from a file with extention \fB.life\fR.
+This lets you overlay multiple saved states to make for some interesting
+effects.  Loaded pattern is initially considered tentative, and
+may be manipulated in various ways before incorporating it into main
+pattern.
+Clear the universe if you want to start from scratch.
+Load assumes pattern is in last directory accessed.
+.IP \fBh\fR 20
+(Hide) stop displaying after each generation, does not iconify.
+.IP \fBc\fR 20
+Toggle showing of cell counts
+.IP \fB?\ Help\fR 20
+Help for this program.
+.IP \fBR\fR 20
+Change the rules in "stays alive on"/"born on"
+format. The standard rules are \fB23/3\fR (survive on two or three
+neighbors, birth on three neighbors for an empty cell).
+.IP \fBN\fR 20
+Change the file's internal name.
+.IP \fBA\fR 20
+Add comments.
+.IP \fBV\fR 20
+View comments.
+.IP \fBC\fR 20
+Clear the universe. 
+.IP \fBQ\fR 20
+Quit
+.IP \fBf\fR 20 
+Run at a fast speed (no delay)
+.IP \fBm\fR 20 
+Run at a medium speed (1/10 sec delay per generation).
+.IP \fBs\fR 20 
+Run at a slow speed (1/2 sec delay per generation).
+.IP \fBp\fR 20 
+Toggle running display of mouse position.  Position is only for 
+reference during a session, and does not effect coordinates of saved points.
+The scaling factor is also shown behind the (x,y) position.
+.IP \fBO\fR 20 
+Set current mouse position to be the origin of displayed coordinates.
+.IP \fBG\fR 20 
+Generate tentative loaded pattern for one or more steps.
+.IP \fBU\fR 20 
+Undo load of tentative pattern.
+.IP \fBI\fR 20 
+Force tentative pattern to be incorporated into main pattern 
+(automatic with \fBg\fR, \fBh\fR, \fBo\fR, \fBl\fR and \fBW\fR commands).
+.IP \fBW\fR 20 
+Write (and flush from memory) script of loaded patterns 
+into a file with \fB.life\fR
+extension.  When loaded,
+this script corresponds the earliest ancestor of current 
+pattern that can be reconstructed from loaded patterns (does not included
+changes made with mouse).  Origin of written pattern
+is mouse position when \fBW\fR is typed.
+.IP \fBD\fR 20 
+Discard current load script, including any tentative pattern,
+but leave cell population intact.  (Helpful for using an old pattern as
+a template to construct a load script).
+
+.SH BUTTON BINDINGS IN NORMAL MODE
+.IP \fB1\fR 20
+Activate a cell at the cursor.
+.IP \fB2\fR 20 
+Center the universe view on the cursor.
+.IP \fB3\fR 20 
+Delete a cell at the cursor.
+
+.SH BUTTON BINDINGS WITH TENTATIVE PATTERN LOADED
+.IP \fB1\fR 20
+Move pattern to current position.
+.IP \fB2\fR 20 
+Flip pattern about its x-axis.
+.IP \fB3\fR 20 
+Rotate pattern clockwise about its origin.
+
+.SH LOAD FILE FORMAT
+A \fB.life\fR image file is an ordinary text file consisting of lines terminated by
+the newline character. It is interpreted as one or more image sections
+separated by section lines beginning with \fB#\fR. Lines led by \fB##\fR are
+considered comments and ignored.
+
+Each image section is interpreted according to the format letter following its
+section line \fB#\fR. The format letters are:
+
+\fBA\fR -- Absolute.
+.br
+Each following nonsection-line is interpreted as an absolute (x,y) coordinate pair.
+
+\fBR\ [xoff[yoff]]\fR -- Relative with an optional offset coordinate pair.
+.br
+Each following nonsection-line is interpreted as a (x,y) coordinate pair
+relative to the current mouse position.
+These relative image sections are normally drawn with 0,0 on the current mouse
+position (coordinates may be negative). This may be changed by including a
+pair of whitespace-separated integers after the format character. If this is
+done, these will be interpreted as a pair of x and y offsets, and the image
+section will be drawn with its upper left corner displaced from the cursor
+position by those offsets. This facility can be used to write image files
+that will load patterns centered on the cursor.
+
+
+\fBD\fR -- Relative to the previous coordinate pair.
+.br
+Each following nonsection-line is interpreted as a (x,y) coordinate pair
+relative to the previous one. The first is relative to the current mouse
+postion.
+
+\fBP\ [xoff[yoff]]\fR -- Picture with an optional offset coordinate pair.
+.br
+Each nonsection-line in the section is interpreted as a scan line of a relative
+image.
+Each \fB*\fR character turns the corresponding cell on. All other characters
+leave the corresponding cell off.
+
+\fBM\ [x = xdiam y = ydiam [rule = digitstring/digitstring]]\fR -- Picture with an optional diameter pair and a rule declaration.
+.br
+If the diameter is present it should indicate the size of the picture bounding box.
+Each nonsection-line in the section is interpreted as a scan line of a relative
+image which is run-length-encoded. Only the characters \fBo\fR, \fBb\fR, \fB$\fR, \fB!\fR and the
+digits \fB0\fR until \fB9\fR should appear except whitechars which are ignored.
+A \fBo\fR character turns the corresponding cell on and a \fBb\fR character turns
+the corresponding cell off. A \fB$\fR character skips to the begin of the next
+image cell line which is aligned just as the first image cell line that starts as the mouse
+position. The \fB!\fR terminates all these data. Each of the three
+characters \fBob$\fR can be led ahead by a positive integer, not staring with a \fB0\fR, which then is
+interpretated as the repetation of that character. Any illegal character will
+be interpretated as \fB!\fR and terminates the scan.
+
+\fBI\ patternname\ [xoff[yoff[rotate[flip[delay]]]]]\fR -- Include pattern.
+.br
+A \fB#I\fR line should have whitespace-separated fields after the \fB#I\fR
+consisting of a pattern name and five optional integer parameters. \fIpatternname\fR takes one of the following three forms:
+.br
+<file>         --   include whole file <file> (like old format)
+.br
+<file>:<name>  --   include pattern block <name> in <file> 
+.br
+:<name>        --   include pattern block <name> in current file 
+.br
+.I xoff
+and \fIyoff\fR are integers representing horizontal and vertical offset.
+.br
+.I rotate
+is an integer that specifies the number of times the pattern is
+rotated 90 degrees clockwise around the origin.  Any value (positive or 
+negative) is acceptable, as all are taken modulo 4 (true mod, not "%").
+.br
+.I flip
+is a multiplier (1 or -1) for the y coordinate that specifies a flip 
+about the x-axis.  Other integers are accepted and silently mapped to 1.
+.br
+.I delay
+is an integer specifying the number of generations to perform before 
+loading the pattern (negative values have same effect as 0).
+.br
+The named pattern is loaded as if it had been included in the image at this 
+point with the given transformation applied. The
+offsets, if present, displace the load point of the pattern relative to the
+current mouse position. The include facility is useful for assembling `sampler'
+collections of interesting patterns, as well as maintaining structured
+representations of complex patterns. 
+
+\fBB\ name\fR and \fBE\fR -- Pattern blocks.  
+.br
+Patterns enclosed by \fB#B\fR \fIname\fR and \fB#E\fR lines are skipped
+when loading a whole file, but may be accessed by adding
+:<name> to the file name.  They are useful for bundling related patterns 
+into the same file.  Access is by sequentially skipping lines not in the 
+block, so excessive numbers of blocks in the same file may slow down the
+loading process.  Pattern blocks may not be nested.
+
+A leading image section with no header line is treated as though it had a
+\fB#A\fR header. Thus, version 1.00 image files will load properly.
+
+\fBN\fR -- Name
+.br
+This line contains the internal name of the pattern (which may differ from the
+name of the file).
+
+\fBO\fR -- Owner
+.br
+This line contains information on the person who wrote the file, it is written
+in the form: id "name"@machine date, for example.
+
+#O jb7m "Jon C. R. Bennett"@sushi.andrew.cmu.edu Fri Jan 12 18:25:54 1990
+
+\fBC\fR -- Comment
+.br
+Lines beginning with \fBC\fR are comments that the user may have automaticaly writen
+to the save file, and which may be viewed via \fBV\fR from within \fBXlife\fR.
+When loading a new pattern file, the old comments will be disgarded.
+
+\fBr\ survivedigits/borndigits\fR -- Set new rules
+.br
+This line defines a new set of rules. \fBsurvivedigits\fR and \fBborndigits\fR
+are a sublist
+of digits out of the range 0 upto 8 counting the number of neighbours when the
+central cell in the moore neighbourhood survives/is borne to state ON.
+For example the default and classical \fIgame_of_life\fR rules are:
+.br
+#r 23/3
+
+.\" \fBL\ xoff\ yoff\ [text]\fR  --  Set label.
+.\" .br
+.\" Writes the string \fBtext\fR starting at (xoff,yoff) relative to the current
+.\" mouse position. On some screens this feature maybe not realized.
+.\" 
+More section formats may be added in the future. 
+
+.SH RESTRICTIONS
+Old files in \fB#P\fR format may not have same y coordinate when read by the
+new release.  For best results, use "\fBoldpconv\fR name ..." on old files. 
+
+.SH DIAGNOSTICS
+.I no display defined
+.br
+Either the environment \fBDISPLAY\fR nor the option \fB-display\fR is set.
+
+.I can't open display
+.br
+The specified display doesn't exist or you have no permission to open it.
+
+.I Can't open main window
+.br
+The creation of the Xlife window failed.
+
+.I Can't load font
+.br
+There is no appropriate Xfont or the fontsearchpath is wrong.
+
+.I structure allocation for windowName failed.
+
+.I structure allocation for iconName failed.
+
+.I create: malloc error:
+.br
+Storage allocation failed when creating a new cellbox inside.
+
+.SH FILES
+/usr/lib/X11/xlife/patterns  -  default directory for lifepatterns
+.br
+ ./.boxcontents  -  scratch file needed for boxcommands
+
+.SH BUGS
+When expose events occur and text is displayed in the life window, the window
+will not be refreshed.
+
+.SH AUTHORS
+Algorithm, implementation and file format enhancements:
+.br
+	Jon Bennett (jcrb@fore.com)
+
+Original X code:
+.br
+	Chuck Silvers (cs4n@andrew.cmu.edu)
+
+Auto-sizing, X options and load format enhancements:
+.br
+	Eric S. Raymond (eric@snark.uu.net)
+
+Enhancements to #I format, box commands and user interface:
+.br
+	Paul Callahan (callahan@cs.jhu.edu)
+
+Improvements of the user interface and subpixelresolution:
+.br
+	Achim Flammenkamp (achim@mathematik.uni-bielefeld.de)
+
+.SH SEE ALSO   
+xtrek(6)

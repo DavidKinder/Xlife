@@ -1,0 +1,7 @@
+#C structured description of period 20 rake (forward gliders)
+
+#C pat          x   y  rot  flip  delay
+#C ---          -   -  ---  ----  -----
+#I puffertrain
+#I ss:s        -9  -7
+#I ss:s       -17   9   0    0     1

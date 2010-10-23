@@ -1,0 +1,13 @@
+23/3 		- the default, of course
+34/34
+1234/3 		- patterns "crystalize"
+12345/45 	- patterns become contained
+12345/4 	- same as above, but settles VERY quickly
+5/12 		- floor tile patterns... Variations of this 
+			tend to be interesting as well.
+/2 		- most patterns expand indefinitely, 
+			some interesting ones. Fast gliders.
+
+123456/3
+12345/3
+1245/3

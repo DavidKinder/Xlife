@@ -1,0 +1,244 @@
+Pattern Editting
+----------------
+
+(Note: the following uses some terminology specific to Life.  For definitions,
+see _Winning Ways_ by Berklekamp, Conway, and Guy, or _The Recursive Universe_,
+by Poundstone.)
+
+Overview
+--------
+The latest revision of Xlife allows more sophisticated editting and maintenance
+of complex patterns.  Almost all large Life patterns that exhibit well-defined 
+behavior (such as the breeder) are in fact composed of smaller patterns that 
+combine in a predictable way.  Storing such patterns in a hierarchical manner 
+can greatly aid future experimentation as well as synthesis of still more 
+complex patterns.  This document explains some of the motivation behind the
+new features, and gives several examples of their use.
+
+Goal of New Features
+--------------------
+It is the goal of the new editting and include features to greatly limit the
+number of Life patterns stored as atomic images (i.e. raw bitmaps or point 
+sets).  Once a glider gun, for example, has been defined, there should be
+no need to duplicate the pattern.  It should instead be possible to refer
+to it by name, as a known mechanism with well-established properties.  In fact,
+the glider gun itself exhibits some structure, as it is composed of two 
+period 30 shuttles that interact to produce gliders.  Ultimately, the 
+"interesting" part of the period 30 shuttle does not seem to have any structure,
+and hence must be represented a picture, such as the following:
+
+               ..*...
+               .*.*..
+               *...**
+               *...**
+               *...**
+               .*.*..
+               ..*...
+
+Unfortunately, it is not enough to merely place such a pattern at the correct
+coordinates.  For example, we can rotate this pattern by multiples of 90
+degrees without essentially changing its behavior.  While this particular 
+pattern has flip symmetry about its horizontal dividing line, other patterns 
+may not, so we may additionally wish to take the mirror image of a pattern.  
+It would be undesirable to maintain eight separate bitmaps for what is really 
+the same pattern, so we would like a facility to perform basic geometric 
+transformations on patterns to be included in more complex ones.
+
+A more subtle issue is that of timing.  When placed between appropriate
+stabilizing objects (such as eaters or blocks) the above pattern will oscillate
+with a period of 30.  Hence, when defining a complex pattern, we may need
+to insist (in addition to any geometric transformations) that it be placed
+within the larger pattern at a particular phase in its cycle.
+
+By controlling position, rotation, flip, and phase shift, we may combine
+patterns in any desired manner.  The #I extensions to Xlife make this
+possible, and the new editting features make it (relatively) convenient.
+For specifications of the extended #I format, see the document NEWINCLUDE.
+
+Ideally, the new editting features will make it possible to use 
+the #I format without ever looking at the description file.  The advanced Life 
+experimenter may, however, wish to modify #I lines with a text editor in
+order to achieve very specific effects (still more advanced CAD tools would 
+eliminate this need).
+
+Examples
+--------
+
+To attempt the following examples, you should be running Xlife.  You must
+have a copy of the file ex.life, supplied with the release, in either the
+directory in which you start up Xlife, or in the pattern directory.
+
+Before trying any of the examples, type 'C' to clear the workspace, if it
+is not already clear.
+
+(1) Experimenting with gun collisions.
+
+Type 'l' to load in a pattern.  Backspace over the default directory (probably
+the pattern library) and type "ex:gun".  This will load the pattern "gun" from 
+the file "ex.life" in either the pattern library or current directory.
+The pattern consists of a glider gun before it has produced any gliders.
+
+Get a feel for the movement, flip, and rotation operations performed with the
+mouse buttons.  All operations are performed with respect to the origin of the
+pattern, which is indicated by a single dot at the smallest scales and becomes
+an X shape at the larger scales (zoom in on it to see this).
+
+In order to place patterns such as glider guns, it is especially important to
+know the direction of the outgoing glider stream.  You may preview this
+by generating the loaded pattern with the 'G' command (*not* the 'g' command).
+Initially, you will want to generate enough steps to see the stream, so type 
+100 when prompted for the number of steps.
+
+Note that the mouse buttons continue to perform transformations on
+the generated pattern.  Place the pattern as desired.  It will be incorporated
+into the main universe when any of the commands g, h, o, l, or W are typed.
+To incorporate it without doing anything else, use 'I'.
+
+Now, load another glider gun in the same manner.  Place the two guns in
+such a way that their outgoing gliders collide.  Not all collisions are 
+well behaved, and you may wish to produce a specific collision, such as
+a clean annihilation of gliders.  The references mentioned at the top, and some
+of the patterns supplied with Xlife, are a good source of interesting 
+collisions.  Use 'G' on the second glider gun to control the phase difference 
+between the colliding gliders.
+
+Type 'g' to let the pattern go and see what happens.  If the collision was 
+chosen randomly, there is a good chance that it will merely break down into 
+chaos.  Some collisions, however, produce interesting effects.  
+
+Save your gun collision into a file using the 'W' command.  Now type 'C' and 
+use 'l' to load it back in.  Note that the result is not what you would expect 
+from saving the current pattern.  That is, even if the pattern did break down 
+into chaos, the pattern written by 'W' corresponds to the collision as you set 
+it up.  If you type 'g' then you should witness the same sequence of events as 
+before.
+
+The file written by 'W' is not a raw pattern image, but rather a "load script."
+That is, it gives Xlife enough information to reconstruct your placement of
+loaded patterns.  It does not contain any changes made by drawing or erasing 
+cells with the mouse, but such changes deviate from the philosophy of pattern 
+structuring and should be avoided except when drawing atomic patterns.
+(In any case, the 'S' command is provided for saving the whole image in an 
+unstructured way.)
+
+(2) Setting up a glider mirror.
+
+It is possible to reflect a stream of gliders as if by a mirror, using a
+period 30 shuttle with eaters at the ends.  The mirror will not work unless
+the stream (from a period 30 gun) and the mirror are perfectly positioned
+and in phase.  In general, this may involve some simple yet tedious calculation
+or else a still more tedious process of trial and error.  In the
+following, however, we will see how to use the editting features to 
+produce the desired effect reasonably simply.
+
+Load in ex:gun, as before, and let it generate (with 'g') until the outgoing
+stream contains 20 or so gliders.  This is the stream we will be reflecting.
+
+Now load in ex:mircollision.  This pattern consists of a glider poised to
+be reflected from a mirror.  Use rotates, flips, and 'G' (one step at a 
+time) until the the mirror glider is an exact copy of the glider furthest
+from the gun.  Use the mouse to move the loaded pattern so that these two
+gliders occupy exactly the same five cells.  It may help to zoom in on the
+pattern. 
+
+Now, simply type 'g' and let the pattern go.  It you performed the above
+steps correctly, you should see a stream of gliders bouncing off the mirror.
+Add more mirrors, if desired, and save the result into a file using 'W'
+
+*** More Advanced Editting
+--------------------------
+Skip the following if you are not interested in familiarizing yourself with the
+details of the #I format.
+
+Take a look at the file generated by 'W' in the above.  It consists of a 
+sequence of #I lines, the first containing ex:gun, and the others containing
+ex:mircollision.  The latter lines each have a delay value as their final 
+parameter, and these parameters will most likely be in the hundreds, as this
+is the number of steps it takes to make the stream of gliders used as a 
+reference.  
+
+Note that the mirror is a period 30 oscillator, so we may replace all of 
+these numbers by their values mod 30 without affecting the crucial 
+phase difference between the mirror(s) and the gun.  Do this, and look at the
+pattern in Xlife.  Note that it takes less time to load, and that the loaded
+pattern does not contain a long stream of gliders.  Type 'g' to verify that the
+mirrors still work (if not, make sure you computed mod correctly). 
+
+The resulting pattern will contain spurious gliders.  These are the gliders
+that came with the pattern ex:mircollision.  Fortunately, ex:mircollision 
+contains ex:mirror with no moves, flips,or rotations applied.
+Hence, by replacing all instances of ex:mircollision by ex:mirror in your
+file, you will obtain the same pattern as before, but without the spurious 
+gliders.
+
+This illustrates the notion of including extra parts in a pattern for 
+reference and eliminating them in the final edit.  Use of this technique
+can substantially reduce the need for explicit calculation when constructing
+complex patterns.
+--------------------------
+*** end of "More Advanced Editting"
+
+(3) Constructing a structured pattern from a template.
+
+Having familiarized yourself with the use of load scripts, you may wish
+to construct structured versions of old patterns you made in the previous
+version of Xlife.  This can be done in a bottom-up fashion by loading
+in the raw image and building up subpatterns using the initial image
+as a reference.  You first need to identify the the atomic subpatterns in the
+old pattern.  For example, in the mirror of the previous example, the atomic
+patterns are two eaters and the period 30 oscillator (shown earlier in this
+document).  
+
+The template pattern should not be written into the load script, and this
+may be prevented by using the 'D' command *after* this pattern has been
+*incorporated* into the universe.  The effects of having the template written
+to the load script are non-fatal, and may be corrected with a text editor.
+However, it is best to get in the habit of typing 'I' (include pattern),
+'D' (discard load script) immediately upon loading a template.
+
+The mirror in ex.life is already given in a structured way, but it will suffice
+to illustrate the technique.  To place the template, load ex:mirror, and type
+'I' and 'D' as mentioned above.  Now, load in succession two eaters (ex:eater)
+and the oscillator (ex:oscil) and place each pattern over the corresponding
+part of the old image.  Use 'W' to write the load script.
+
+If the original mirror had been stored as a bitmap then you would have 
+transformed a seemingly arbitrary set of points into a structured pattern.  
+Patterns defined in this way can later be combined into more complex patterns, 
+and at any level, the pattern can be seen to be a logical combination of 
+well-understood components rather than an amorphous conglomeration of Life 
+cells.   
+
+(4) Using the 'collect' utility.
+
+One seeming disadvantage of structuring patterns with the 'W' command is that
+a pattern that used to reside in a single file may now be spread over several 
+files.  There may be too many to easily keep track of them.  The new release
+provides a facility for bundling multiple subpatterns into single files using
+pattern blocks.  This is described in NEWINCLUDE, and may be added with a 
+text editor in order to carefully arrange interesting patterns in a logical
+format.  For the user who wishes only to use these as a means of collecting
+a structured pattern into a single file, however, the 'collect' utility is
+provided.
+
+Collect takes a pattern name as an argument (with the same default directories
+as in the 'l' command).   It writes a file to standard output that contains
+a stand-alone version of the pattern. Usage is:
+
+              collect pattern > destination
+
+where destination is any valid file name with a .life extension.  Xlife will
+now read the destination file as an Xlife pattern, and this file can, for 
+example, be mailed to others without the need to send multiple files.
+ 
+Try this on any of the files written by 'W' in examples 1, 2, and 3.
+ 
+Conclusion
+----------
+The above examples illustrate techniques for using the new Xlife features to
+create structured patterns.  Other techniques may be found that use these
+features.  Conversely, the inability to apply some reasonable technique may
+indicate deficiencies inherent in these features.  Life experimenters are 
+encouraged to send questions, comments, and ideas for changes to 
+Paul Callahan (callahan@cs.jhu.edu).  Actual improvements to the source
+code are, of course, especially encouraged. 

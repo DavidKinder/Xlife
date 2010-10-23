@@ -1,0 +1,7 @@
+#C structured description of period 20 puffertrain
+
+#C pat      x   y  rot  flip  delay
+#C ---      -   -  ---  ----  -----
+#I gen:20
+#I ss:s     1  -7   0    0     3
+#I ss:s     1   7   0    0     3
