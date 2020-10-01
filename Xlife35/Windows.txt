@@ -9,6 +9,6 @@ For those unfamiliar with Xlife, press 'l' to load a file (a good example is "br
 then press 'g' to start generating. For a list of all commands, press '?'.
 
 David Kinder
-davidk.kinder@virgin.net
+davidk@davidkinder.co.uk
 http://www.davidkinder.co.uk/
 
