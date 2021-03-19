@@ -24,10 +24,13 @@ extern "C"
 #include <pwd.h>
 #include <unistd.h>
 #include <sys/time.h>
+
+#pragma warning(disable: 4430)
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#pragma warning(default: 4430)
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -879,7 +882,7 @@ extern "C" Status XStringListToTextProperty(char** list, int count, XTextPropert
 
   // Add the strings to buffer
   len = 0;
-  for (i = 0; i < count; i++)
+  for (int i = 0; i < count; i++)
   {
     strcpy((char*)(text_prop_return->value + len),list[i]);
     len += strlen(list[i]) + 1;

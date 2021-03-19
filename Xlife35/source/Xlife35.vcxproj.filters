@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{d82a765f-0c0e-4c0c-8b2c-af60a0c94e36}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{f001e1fa-e00c-48b8-83f1-d94166db383c}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="X11Lib Source Files">
+      <UniqueIdentifier>{ec469d44-61e9-4749-969f-9507446c2dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="X11Lib Header Files">
+      <UniqueIdentifier>{2990ac8a-f4f3-49cd-b815-a775f906da77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="button.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cell.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cellbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="expose.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_misc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="generate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gentab.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="help.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="key.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="keyin.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resize.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\X11Lib\X11App.cpp">
+      <Filter>X11Lib Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\X11Lib\X11FrameWnd.cpp">
+      <Filter>X11Lib Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\X11Lib\X11Lib.cpp">
+      <Filter>X11Lib Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\X11Lib\X11WinMain.c">
+      <Filter>X11Lib Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\X11Lib\X11Wnd.cpp">
+      <Filter>X11Lib Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cellbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cursor_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cursor_mask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="icon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="macros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="patchlevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\X11Lib\X11App.h">
+      <Filter>X11Lib Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\X11Lib\X11FrameWnd.h">
+      <Filter>X11Lib Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\X11Lib\X11Wnd.h">
+      <Filter>X11Lib Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\X11Lib\X11Lib.rc">
+      <Filter>X11Lib Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
