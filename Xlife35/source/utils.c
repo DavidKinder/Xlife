@@ -142,7 +142,7 @@ int ClassifyWin(Window win)
 	return COORDWIN;
 	return  -1;
 }
-
+/*
 char *itoa(int n)
 {
     static char buf[16];
@@ -166,7 +166,7 @@ char *itoa(int n)
     *--ptr = sign;
     return(ptr);
 }
-
+*/
 void drawpoint(int x, int y, int c)
 {
     if(c){

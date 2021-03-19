@@ -53,7 +53,7 @@ GLOBAL GC ntextgc, btextgc,inputgc,blackgc,whitegc,xorgc;
 GLOBAL Pixmap lifepm;
 GLOBAL Cursor cursor;
 
-GLOBAL char *itoa( int );
+/* GLOBAL char *itoa( int ); */
 
 GLOBAL UNS32 xpos,ypos,xorigin,yorigin,lastx,lasty;
 
